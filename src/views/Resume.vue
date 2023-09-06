@@ -96,6 +96,13 @@
             </template>
         </el-table-column>
     </el-table>
+    <div class="block">
+        <el-pagination
+            layout="prev, pager, next"
+            :page-count="total"
+            @current-change="handlePage">
+        </el-pagination>
+    </div>
 </template>
 <script>
 import { ElMessage } from "element-plus";
@@ -136,13 +143,19 @@ export default({
         const page = ref(1);
         const pageSize = ref(10);
         const group=ref("")
+        const groupnum=ref("")
         const num=ref("")
+        const total=ref(0)
         const getallresumes=async()=>{
-            const res=await proxy.$api.getAllResumes(department.value,page.value,pageSize.value,term.value)
+            const res=await proxy.$api.getAllResumes(groupnum.value,page.value,pageSize.value,num.value)
             console.log(res)
             console.log(res.data.list)
             if(res.code==200){
                 ElMessage.success("获取成功")
+                if(res.data.count%10!=0)
+                    total.value=(res.data.count-res.data.count%10)/10+1
+                else
+                    total.value=res.data.count/10
                 allResumes.splice(0,allResumes.length,...res.data.list)
             }else{
                 console.log('请求失败')
@@ -163,6 +176,10 @@ export default({
         }));
         });
         const downloadFile =async (fileId,name) => {
+                if(fileId==null){
+                    ElMessage.error("该文件为空")
+                    return
+                }
                 const res=await proxy.$api.downloadPicture(fileId,1)
                 const url = window.URL.createObjectURL(new Blob([res]))
                 const link = document.createElement('a')
@@ -176,18 +193,25 @@ export default({
             
             };
         function exchange(val){
-            if(val[0]=="2213141412")
+            if(val[0]=="2213141412"){
+                groupnum.value="2213141412"
                 group.value="技术组"
+            }
             else if(val[1]=="2341412413sdaqed")
-                group.value="行政组"
+                {group.value="行政组"
+                groupnum.value="2341412413sdaqed"}
             else if(val[2]=="dafdafmalmf")
-                group.value="节目组"
+                {group.value="节目组"
+                groupnum.value="dafdafmalmf"}
             else if(val[3]=="eqfdrewfffffqf")
-                group.value="摄制组"
+                {group.value="摄制组"
+                groupnum.value="eqfdrewfffffqf"}
             else if(val[4]=="sadadqfggggfadad")
-                group.value="新媒体组"
+                {group.value="新媒体组"
+            groupnum.value="sadadqfggggfadad"}
             else
-                group.value="设计组"
+                {group.value="设计组"
+                groupnum.value="weqqqqqqqqdfqfazfafa"}
             num.value=val[1]
             const getallresumes=async()=>{
                 const res=await proxy.$api.getAllResumes(val[0],page.value,pageSize.value,val[1])
@@ -259,14 +283,18 @@ export default({
                 a.click();
                 URL.revokeObjectURL(url);
             }
+        function handlePage(val){
+            page.value=val
+            getallresumes()
+        }
         return{
             allResumes,
             page,
-            pageSize,
+            pageSize,total,handlePage,
             getallresumes,
             downloadFile,
             value,options,exchange,getAllDep,
-            exportToExcel,group,num
+            exportToExcel,group,num,groupnum
         }
     }
 })
