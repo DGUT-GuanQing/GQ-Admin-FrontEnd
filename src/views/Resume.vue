@@ -96,6 +96,13 @@
             </template>
         </el-table-column>
     </el-table>
+    <div class="block">
+        <el-pagination
+            layout="prev, pager, next"
+            :page-count="total"
+            @current-change="handlePage">
+        </el-pagination>
+    </div>
 </template>
 <script>
 import { ElMessage } from "element-plus";
@@ -137,12 +144,17 @@ export default({
         const pageSize = ref(10);
         const group=ref("")
         const num=ref("")
+        const total=ref(0)
         const getallresumes=async()=>{
             const res=await proxy.$api.getAllResumes(department.value,page.value,pageSize.value,term.value)
             console.log(res)
             console.log(res.data.list)
             if(res.code==200){
                 ElMessage.success("获取成功")
+                if(res.data.count%10!=0)
+                    total.value=(res.data.count-res.data.count%10)/10+1
+                else
+                    total.value=res.data.count/10
                 allResumes.splice(0,allResumes.length,...res.data.list)
             }else{
                 console.log('请求失败')
@@ -259,10 +271,14 @@ export default({
                 a.click();
                 URL.revokeObjectURL(url);
             }
+        function handlePage(val){
+            page.value=val
+            getallresumes()
+        }
         return{
             allResumes,
             page,
-            pageSize,
+            pageSize,total,handlePage,
             getallresumes,
             downloadFile,
             value,options,exchange,getAllDep,
