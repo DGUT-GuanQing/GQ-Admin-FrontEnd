@@ -178,7 +178,7 @@ export default({
         const downloadFile =async (fileId,name) => {
                 if(fileId==null){
                     ElMessage.error("该文件为空")
-                    return
+                    return 
                 }
                 const res=await proxy.$api.downloadPicture(fileId,1)
                 const url = window.URL.createObjectURL(new Blob([res]))
