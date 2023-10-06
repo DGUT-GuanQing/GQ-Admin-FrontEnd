@@ -18,7 +18,7 @@
             />
         </el-option-group>
     </el-select>
-    <el-button  @click="exportToExcel">对应组对应期数成员Excel</el-button>
+    <el-button class="button1"  @click="exportToExcel">对应组对应期数成员Excel</el-button>
     <!-- <el-button class="button1" @click="getallresumes()">查询全部</el-button> -->
     <el-table
         :data="allResumes"
@@ -146,6 +146,7 @@ export default({
         const groupnum=ref("")
         const num=ref("")
         const total=ref(0)
+        const CurriculumVitae=reactive([])
         const getallresumes=async()=>{
             const res=await proxy.$api.getAllResumes(groupnum.value,page.value,pageSize.value,num.value)
             console.log(res)
@@ -225,9 +226,19 @@ export default({
                     ElMessage.error("获取信息失败~")
                 }
             }
+            const exportVitae=async()=>{
+                const res=await proxy.$api.exportCurriculumVitae(val[0],val[1])
+                console.log(res)
+                if(res.code==200){
+                    CurriculumVitae.splice(0,CurriculumVitae.length,...res.data.list)
+                }else{
+                    console.log("获取对应全部简历失败")
+                }
+            }
             if(/\d/.test(val[1])&&typeof val[1] === 'number'){
                 console.log('yes')
                 getallresumes();
+                exportVitae();
             }else if(typeof val[0]==='number'&&typeof val[1]==='string'){
                 const temp=val[1];
                 val[1]=val[0];
@@ -238,12 +249,6 @@ export default({
             }else{
                 console.log('error')
             }
-            // if(val[1]){
-            //     getallresumes();
-            // }
-            // if(val[2]){
-            //     ElMessage.error('选择错误')
-            // }
         }
         const getAllDep=async()=>{
             const res=await proxy.$api.getAllDepartment()
@@ -257,7 +262,7 @@ export default({
             }
         }
         const exportToExcel=(value)=>{
-                const filteredData = allResumes.map((item) => ({
+                const filteredData = CurriculumVitae.map((item) => ({
                         姓名: item.name,
                         学号: item.studentId,
                         学院:item.college,
@@ -294,7 +299,8 @@ export default({
             getallresumes,
             downloadFile,
             value,options,exchange,getAllDep,
-            exportToExcel,group,num,groupnum
+            exportToExcel,group,num,groupnum,
+            CurriculumVitae,
         }
     }
 })
@@ -306,6 +312,6 @@ export default({
 .button1{
     position: relative;
     float: right;
-    right: 100px;
+    right: 50px;
 }
 </style>

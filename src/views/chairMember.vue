@@ -7,8 +7,8 @@
             :value="item.value"
             />
     </el-select>
-    <el-button v-show="value==0" @click="exportToExcel(value,id)">抢到票成员Excel</el-button>
-    <el-button v-show="value==1" @click="exportToExcel(value,id)">看完讲座成员Excel</el-button>
+    <el-button v-show="value==0" class="button1"  @click="exportToExcel(value,id)">抢到票成员Excel</el-button>
+    <el-button v-show="value==1" class="button1"  @click="exportToExcel(value,id)">看完讲座成员Excel</el-button>
     <el-table
         :data="chairMember"
         style="width: 100%">
@@ -26,11 +26,6 @@
         <el-table-column
         prop="studentId"
         label="学号"
-        width="120">
-        </el-table-column>
-        <el-table-column
-        prop="grade"
-        label="年级"
         width="120">
         </el-table-column>
         <el-table-column
@@ -92,15 +87,17 @@ import XLSX from 'xlsx'
             ]
             const router = useRouter()
             const chairMember=reactive([])
+            const userdata=reactive([])
             const page = ref(1);
             const pageSize = ref(10);
-            const status=ref('')
+            const status=ref(0)
             const {proxy} = getCurrentInstance()
             const id=router.currentRoute.value.query.id
             const total=ref(0)
             onMounted(() => {
                 console.log(id)
                 getChairMember()
+                exportUserdata()
                 // console.log(chairMember)
             })
             const getChairMember=async()=>{
@@ -121,7 +118,10 @@ import XLSX from 'xlsx'
             const getChairMember1=async()=>{
                 const res=await proxy.$api.getChairMember(id,page.value,pageSize.value,1)
                 console.log(res)
-                total.value=(res.data.count-res.data.count%5)/5+1
+                if(res.data.count%5!=0)
+                      total.value=(res.data.count-res.data.count%5)/5+1
+                    else
+                      total.value=res.data.count/5
                 if(res.code==200){
                     ElMessage.success('获取成功')
                     chairMember.splice(0,chairMember.length,...res.data.list)
@@ -129,6 +129,14 @@ import XLSX from 'xlsx'
                     console.log('请求失败')
                     ElMessage.error("获取信息失败~")
                 }
+            }
+            const exportUserdata=async()=>{
+                const res=await proxy.$api.exportUser(id,status.value)
+                console.log(res)
+                if(res.code==200)
+                    userdata.splice(0,userdata.length,...res.data.list)
+                else
+                    console.log("获取失败")
             }
             function handlePage(val){
                 page.value=val
@@ -148,14 +156,18 @@ import XLSX from 'xlsx'
                             ElMessage.error("获取信息失败~")
                         }
                     }
-                    getChairMember()    
+                    getChairMember()  
+                    status.value=0
+                    exportUserdata()
                 }
                 else if(val==1){
+                    status.value=1
                     getChairMember1()
+                    exportUserdata()
                 }
             }
             const exportToExcel = (value) => {
-                const filteredData = chairMember.map((item) => ({
+                const filteredData = userdata.map((item) => ({
                     姓名: item.name,
                     学号: item.studentId,
                 }));
@@ -184,12 +196,17 @@ import XLSX from 'xlsx'
             chairMember,
             value,options,
             exchange,
-            exportToExcel,total
+            exportToExcel,total,
+            exportUserdata,userdata
             }
         }
     })
 </script>
 
 <style lang="less" >
-
+.button1{
+    position: relative;
+    float: right;
+    right: 340px;
+}
 </style>

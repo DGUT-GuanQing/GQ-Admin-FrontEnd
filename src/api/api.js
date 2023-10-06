@@ -266,5 +266,25 @@ export default{
                 'token':Cookies.get('token')
             }
         })
+    },
+    //导出简历
+    exportCurriculumVitae(id,term){
+        return request({
+            url:`/backend/exportCurriculumVitae?departmentId=${id}&term=${term}`,
+            method:"GET",
+            headers:{
+                'token':Cookies.get('token')
+            }
+        })
+    },
+    //导出用户
+    exportUser(id,status){
+        return request({
+            url:`/backend/exportUser?id=${id}&status=${status}`,
+            method:"GET",
+            headers:{
+                'token':Cookies.get('token')
+            }
+        })
     }
 }
