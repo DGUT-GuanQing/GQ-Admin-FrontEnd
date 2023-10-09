@@ -52,6 +52,11 @@ const routes=[
                 path:'/departmentManagement',
                 name:'departmentManagement',
                 component:()=>import('../views/departmentManagement.vue')
+            },
+            {
+                path:'/Ticket',
+                name:'Ticket',
+                component:()=>import('../views/Ticket.vue')
             }
         ]
     },

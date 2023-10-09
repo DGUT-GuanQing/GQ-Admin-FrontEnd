@@ -85,6 +85,12 @@ export default {
         icon:'MessageBox',
         path:"/departmentManagement",
         name:'departmentManagement'
+      },
+      {
+        label:"票务管理",
+        icon:"MessageBox",
+        path:"/Ticket",
+        name:'Ticket'
       }
     ];
     // 创建router对象

@@ -286,5 +286,25 @@ export default{
                 'token':Cookies.get('token')
             }
         })
+    },
+    //绑票系统
+    BoundTicket(StuNum,TicNum){
+        return request({
+            url:`/backend/bandTicket?studentId=${StuNum}&ticketId=${TicNum}`,
+            method:"POST",
+            headers:{
+                'token':Cookies.get('token')
+            }
+        })
+    },
+    //查询票号区间导出
+    exportBound(left,right){
+        return request({
+            url:`/backend/exportTicketBand?endId=${right}&startId=${left}`,
+            method:"GET",
+            headers:{
+                'token':Cookies.get('token')
+            }
+        })
     }
 }
