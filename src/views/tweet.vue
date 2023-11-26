@@ -12,6 +12,7 @@
                     <div class="el-upload__tip">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  jpg/png files with a size less than 1MB
                     </div>
+                    <img style="width:100px ;height:100px" :src="imageUrl" v-if="imageUrl" />
                     <!-- <img style="width:50px height:35px" :src="imageUrl" v-if="imageUrl" /> -->
                 </el-form-item>
                 <el-form-item label="类型" :label-width="formLabelWidth">

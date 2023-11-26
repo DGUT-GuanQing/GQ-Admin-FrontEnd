@@ -18,6 +18,7 @@
             <div class="el-upload__tip">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  jpg/png files with a size less than 1MB
             </div>
+            <img style="width:100px ;height:100px" :src="imageUrl" v-if="imageUrl" />
             <!-- <img style="width:50px height:35px" :src="imageUrl" v-if="imageUrl" /> -->
         </el-form-item>
         <el-form-item label="讲座预告公众号地址" :label-width="formLabelWidth">
@@ -41,6 +42,7 @@
             <div class="el-upload__tip">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  jpg/png files with a size less than 1MB
             </div>
+            <img style="width:100px ;height:100px" :src="imageUrl1" v-if="imageUrl1" />
         </el-form-item>
         <el-form-item label="开放票数" :label-width="formLabelWidth">
           <el-input v-model="rowData.ticketNumber" autocomplete="off" />
@@ -108,7 +110,7 @@
           </el-popconfirm>
         </span>
       </template>
-        </el-dialog>
+      </el-dialog>
         <el-table
             :data="allChair"
             style="width: 1700px;height:auto">

@@ -26,7 +26,7 @@
                 <div class="el-upload__tip">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  jpg/png files with a size less than 1MB
                 </div>
-              <!-- <img style="width:50px height:35px" :src="imageUrl" v-if="imageUrl" /> -->
+              <img style="width:100px ;height:100px" :src="imageUrl" v-if="imageUrl" />
           </el-form-item>
           <el-form-item label="嘉宾" :label-width="formLabelWidth">
             <el-input v-model="upNewChairData.guestName" autocomplete="off" />
@@ -52,6 +52,7 @@
               <div class="el-upload__tip">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  jpg/png files with a size less than 1MB
               </div>
+              <img class="img" :src="imageUrl1" v-if="imageUrl1" />
           </el-form-item>
           <el-form-item label="抢票开始时间" :label-width="formLabelWidth">
             <!-- <el-input v-model="upNewChairData.grabTicketsStart" autocomplete="off" /> -->
@@ -122,6 +123,7 @@
                       <div class="el-upload__tip">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  jpg/png files with a size less than 1MB
                       </div>
+                  <img style="width:100px ;height:100px" :src="imageUrl" v-if="imageUrl" />
                     <!-- <img style="width:50px height:35px" :src="imageUrl" v-if="imageUrl" /> -->
                 </el-form-item>
                 <el-form-item label="类型" :label-width="formLabelWidth">
@@ -242,6 +244,7 @@ export default({
           file.value = event.target.files[0]
           picture.value = file.value
           imageUrl.value = URL.createObjectURL(file.value)
+          // console.log(imageUrl,imageUrl.value)
         }
         const handleFileChange1 = (event) => {
               file1.value = event.target.files[0]
@@ -300,5 +303,10 @@ export default({
   color: var(--el-text-color-secondary);
   font-size: 14px;
   margin-bottom: 20px;
+}
+.img{
+  width:100px ;height:100px;
+  position: relative;
+  /* 留白，待处理 */
 }
 </style>
