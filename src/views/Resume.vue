@@ -146,7 +146,10 @@ export default({
         const groupnum=ref("")
         const num=ref("")
         const total=ref(0)
+<<<<<<< HEAD
         const CurriculumVitae=reactive([])
+=======
+>>>>>>> 6e11c8e96e786ff7f892ac097dc50e8e40b461d8
         const getallresumes=async()=>{
             const res=await proxy.$api.getAllResumes(groupnum.value,page.value,pageSize.value,num.value)
             console.log(res)
